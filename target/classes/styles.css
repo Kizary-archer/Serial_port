@@ -1,0 +1,30 @@
+#VBoxMainMonitor{
+-fx-font-family: "Segoe UI Semibold";
+-fx-background-color: #1d1d1d;
+-fx-fill-width:true;
+-fx-minHeight:-Infinity;
+-fx-minWidth:-Infinity;
+-fx-prefHeight:500;
+-fx-prefWidth:500;
+-fx-maxWidth:Infinity;
+-fx-maxHeight:Infinity;
+
+
+}
+#title{
+-fx-text-fill: white;
+-fx-font-size: 16pt;
+}
+#TextArea1{
+-fx-padding:5;
+-fx-minHeight:-Infinity;
+-fx-minWidth:-Infinity;
+
+}
+#CommandPane{
+-fx-alignment: center;
+-fx-max-width: Infinity;
+-fx-padding:5;
+-fx-background-color: aqua;
+}
+
