@@ -1,4 +1,4 @@
-package org.openjfx;
+package SerialPort;
 
 import SerialPort.seriallist;
 import javafx.collections.FXCollections;

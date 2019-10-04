@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="VBoxMainMonitor" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.serialmonitorController">
+<VBox fx:id="VBoxMainMonitor" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SerialPort.serialmonitorController">
    <TextArea fx:id="TextArea1" prefHeight="500" prefWidth="500" VBox.vgrow="ALWAYS" />
 
          <GridPane fx:id="CommandPane">

@@ -1,4 +1,4 @@
-package org.openjfx;
+package SerialPort;
 
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
@@ -10,7 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-
+import javafx.scene.layout.VBox;
 
 
 import java.net.URL;
@@ -19,10 +19,11 @@ import java.util.ResourceBundle;
 
 public class serialmonitorController implements Initializable {
 
+
     @FXML
     TextField TextField1 = new TextField();
     @FXML
-    TextArea TextArea1 = new TextArea();
+    volatile TextArea TextArea1 = new TextArea();
 
     private SerialPort comPort;
 
@@ -47,7 +48,7 @@ public class serialmonitorController implements Initializable {
                     byte[] newData = new byte[comPort.bytesAvailable()];
                     comPort.readBytes(newData, newData.length);
                     String DataStr = new String(newData);
-                    //TextArea1.appendText(DataStr);
+                   synchronized (TextArea1){TextArea1.appendText(DataStr);}
                     System.out.println(DataStr);
                 }
             });
