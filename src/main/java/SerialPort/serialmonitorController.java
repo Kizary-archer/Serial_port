@@ -3,6 +3,7 @@ package SerialPort;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,11 +11,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
-
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class serialmonitorController implements Initializable {
@@ -29,7 +27,6 @@ public class serialmonitorController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
 
             comPort = SerialPort.getCommPort("COM4");
             comPort.openPort();
@@ -47,9 +44,9 @@ public class serialmonitorController implements Initializable {
 
                     byte[] newData = new byte[comPort.bytesAvailable()];
                     comPort.readBytes(newData, newData.length);
-                    String DataStr = new String(newData);
-                   synchronized (TextArea1){TextArea1.appendText(DataStr);}
-                    System.out.println(DataStr);
+                    String ComData = new String(newData);
+                   Platform.runLater(() ->{TextArea1.appendText(ComData);});
+                    System.out.println(ComData);
                 }
             });
 
@@ -57,21 +54,18 @@ public class serialmonitorController implements Initializable {
 
 
     }
+    public void EnterButtonClick(ActionEvent actionEvent) {//отправка данных
+        TextArea1.clear();
+        byte[] byteData = TextField1.getText().getBytes();
+        comPort.writeBytes(byteData, byteData.length);
+    }
     // Show a Warning Alert without Header Text
     private  void showAlertWithoutHeaderText() {
         Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle("Warning alert");
-
-
-        // Header Text: null
         alert.setHeaderText(null);
         alert.setContentText("COM port not detected");
 
         alert.show();
-    }
-
-    public void EnterButtonClick(ActionEvent actionEvent) {//отправка данных
-        byte[] byteData = TextField1.getText().getBytes();
-        comPort.writeBytes(byteData, byteData.length);
     }
 }
