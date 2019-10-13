@@ -1,6 +1,5 @@
 package SerialPort;
 
-import SerialPort.seriallist;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,7 +24,7 @@ public class ComSelecterController implements Initializable {
     @FXML
     Button button;
 
-    private ObservableList<String> comPortList = FXCollections.observableArrayList(seriallist.getSerialPortNames());
+    private ObservableList<String> comPortList = FXCollections.observableArrayList(ComPortList.getSerialPortNames());
     protected static String ComPort = "";
 
     @Override

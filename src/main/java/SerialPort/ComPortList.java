@@ -1,6 +1,6 @@
 package SerialPort;
 import com.fazecast.jSerialComm.*;
-public class seriallist {
+public class ComPortList {
 
     public static String[] getSerialPortNames() {
 

@@ -4,7 +4,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fillWidth="false" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SerialPort.ComSelecterController">
+<VBox fillWidth="false" stylesheets="@monitorStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SerialPort.ComSelecterController">
     <Label fx:id="title" text="порт:" />
     <ListView fx:id="ListView1" onMouseClicked="#ClickListView"/>
 </VBox>
