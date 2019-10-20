@@ -1,6 +1,8 @@
 package SerialPort;
 
+import com.sun.javafx.tk.Toolkit;
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,7 +25,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
-    }
+        }
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
@@ -32,9 +34,6 @@ public class App extends Application {
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getClassLoader().getResource (fxml + ".fxml"));
         return fxmlLoader.load();
-    }
-    static void CloseWindow(){
-
     }
 
     public static void main(String[] args) {

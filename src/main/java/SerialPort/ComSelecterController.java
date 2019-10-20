@@ -24,12 +24,11 @@ public class ComSelecterController implements Initializable {
     @FXML
     Button button;
 
-    private ObservableList<String> comPortList = FXCollections.observableArrayList(ComPortList.getSerialPortNames());
     protected static String ComPort = "";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ListView1.setItems(comPortList);
+
         // получаем модель выбора элементов
         ListView1.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
