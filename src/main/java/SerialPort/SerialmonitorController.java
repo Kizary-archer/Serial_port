@@ -37,10 +37,6 @@ public class SerialmonitorController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        ComPortServise test = new ComPortServise();
-        test.start();
-        test.getValue();
-
        // SerialPort comPort = SerialPort.getCommPort("COM4");
           //  comPort.openPort();
           //  comPort.setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
@@ -94,12 +90,12 @@ public class SerialmonitorController implements Initializable {
 
         }
         ComboBox<String> ComboBox1 = new ComboBox<String>();
+        ComboBox<String> ComboBox2 = new ComboBox<String>();
         ComPortServise comPortServise = new ComPortServise();
-        comPortServise.setOnReady(event -> {
-            ObservableList<String> p = (ObservableList<String>)comPortServise.getValue();
+        comPortServise.setOnSucceeded(e -> {
+             ComboBox2.setItems(comPortServise.getName());
         });
         comPortServise.start();
-        ComboBox ComboBox2 = new ComboBox();
         HBox hBox = new HBox(ComboBox1,ComboBox2);
         VBoxMainMonitor.getChildren().add(hBox);
         ObservableList<String> comList = FXCollections.observableArrayList("Java", "JavaScript", "C#", "Python");
