@@ -7,24 +7,22 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
 
-public class  ComPortServise extends Service {
+public class  ComPortServise extends ScheduledService {
 
-   private ObservableList<String> names = FXCollections.observableArrayList();
-    public ObservableList<String> getName(){return names;}
+   private ObservableList<String> names;
+    ObservableList<String> getName(){return names;}
 
     @Override
     protected  Task  createTask() {
         return new  Task() {
             @Override
             protected ObservableList<String> call() throws Exception {
-                while (isCancelled()) {
                     SerialPort[] serialPort = SerialPort.getCommPorts();
-
+                    names = FXCollections.observableArrayList();
                     for (SerialPort port : serialPort) {
                         names.add(port.getSystemPortName());
-                        cancelled();
                     }
-                }
+
                 return names;
             }
         };

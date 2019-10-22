@@ -10,5 +10,5 @@
       <font>
          <Font name="Times New Roman Bold Italic" size="18.0" />
       </font></Label>
-    <ListView fx:id="ListView1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#ClickListView" prefHeight="156.0" prefWidth="159.0" />
+    <ListView fx:id="ListView1" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#ClickListView" prefHeight="150.0" prefWidth="120.0" />
 </VBox>

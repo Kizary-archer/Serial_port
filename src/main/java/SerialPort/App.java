@@ -39,8 +39,6 @@ public class App extends Application {
     }
 
      static void comSelecter(){
-         ComPortServise comPortServise = new ComPortServise();
-         comPortServise.setOnSucceeded(event -> {
              Stage rootStage = getStage();
              // New window (Stage)
              Stage comSelectWindow = new Stage();
@@ -51,7 +49,6 @@ public class App extends Application {
                  e.printStackTrace();
              }
              comSelectWindow.setScene(scene);
-             
 
              // Specifies the modality for new window.
              comSelectWindow.initModality(Modality.WINDOW_MODAL);
@@ -59,9 +56,7 @@ public class App extends Application {
              // Specifies the owner Window (parent) for new window
              comSelectWindow.initOwner(rootStage);
              comSelectWindow.show();
-         });
-         comPortServise.start();
-       
+
     }
     public static void main(String[] args) {
         launch();
