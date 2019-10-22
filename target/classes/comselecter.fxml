@@ -3,8 +3,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox fillWidth="false" stylesheets="@monitorStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SerialPort.ComSelecterController">
-    <Label fx:id="title" text="порт:" />
-    <ListView fx:id="ListView1" onMouseClicked="#ClickListView"/>
+<VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: aqua;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SerialPort.ComSelecterController">
+    <Label fx:id="title" focusTraversable="false" text="порт:" textAlignment="CENTER" textOverrun="CLIP">
+      <font>
+         <Font name="Times New Roman Bold Italic" size="18.0" />
+      </font></Label>
+    <ListView fx:id="ListView1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#ClickListView" prefHeight="156.0" prefWidth="159.0" />
 </VBox>

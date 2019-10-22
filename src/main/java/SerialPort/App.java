@@ -1,11 +1,10 @@
 package SerialPort;
 
-import com.sun.javafx.tk.Toolkit;
 import javafx.application.Application;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -17,14 +16,17 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
-
+     private static Stage primaryStage;
+     static  Stage getStage(){return primaryStage;}
     @Override
     public void start(Stage stage) throws IOException {
+        primaryStage = stage;
         scene = new Scene(loadFXML("serialmonitor"));
        // scene.getStylesheets().add(getClass().getResource("monitorStyle.css").toExternalForm());
         stage.setScene(scene);
-        stage.initStyle(StageStyle.UNDECORATED);
+       // stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
+        comSelecter();
         }
 
     static void setRoot(String fxml) throws IOException {
@@ -36,6 +38,31 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
+     static void comSelecter(){
+         ComPortServise comPortServise = new ComPortServise();
+         comPortServise.setOnSucceeded(event -> {
+             Stage rootStage = getStage();
+             // New window (Stage)
+             Stage comSelectWindow = new Stage();
+             Scene scene = null;
+             try {
+                 scene = new Scene(loadFXML("comselecter"));
+             } catch (IOException e) {
+                 e.printStackTrace();
+             }
+             comSelectWindow.setScene(scene);
+             
+
+             // Specifies the modality for new window.
+             comSelectWindow.initModality(Modality.WINDOW_MODAL);
+             comSelectWindow.initStyle(StageStyle.UNDECORATED);
+             // Specifies the owner Window (parent) for new window
+             comSelectWindow.initOwner(rootStage);
+             comSelectWindow.show();
+         });
+         comPortServise.start();
+       
+    }
     public static void main(String[] args) {
         launch();
     }
