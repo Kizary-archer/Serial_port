@@ -6,19 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -36,8 +29,9 @@ public class SerialmonitorController implements Initializable {
     Parent root;
 
     private static String comPortName;
+    private ComPortListenerServise comPortListenerServise;
 
-    public static void setComPortName(String name){comPortName = name;}
+    static void setComPortName(String name){comPortName = name;}
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -46,6 +40,12 @@ public class SerialmonitorController implements Initializable {
           //  comPort.openPort();
           //  comPort.setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
             //showAlertWithoutHeaderText();
+        comPortListenerServise = new ComPortListenerServise("COM3");
+        comPortListenerServise.setOnSucceeded(e->{
+            TextArea1.appendText((String)comPortListenerServise.getValue());
+        });
+        comPortListenerServise.start();
+
 
     }
 
@@ -54,13 +54,14 @@ public class SerialmonitorController implements Initializable {
         //byte[] byteData = TextField1.getText().getBytes();
        // comPort.writeBytes(byteData, byteData.length);
         TextArea1.appendText(comPortName);
+        ComPortListenerServise comPortListener = new ComPortListenerServise(comPortName);
 
     }
     public void settingClick(MouseEvent actionEvent) throws IOException, InterruptedException {
-        ComPortServise comPortServise = new ComPortServise();
+        ComPortListServise comPortListServise = new ComPortListServise();
         if (VBoxMainMonitor.getChildren().size()>2) {
             VBoxMainMonitor.getChildren().remove(2);
-            comPortServise.cancel();
+            comPortListServise.cancel();
             return;
         }
         ComboBox<String> ComboBox1 = new ComboBox<String>();
@@ -69,12 +70,15 @@ public class SerialmonitorController implements Initializable {
         HBox hBox = new HBox(ComboBox1,ComboBox2);
 
         VBoxMainMonitor.getChildren().add(hBox);
-      comPortServise.setPeriod(Duration.seconds(1));
-        comPortServise.setOnSucceeded(e -> {
-            ComboBox1.setItems(comPortServise.getName());
+      comPortListServise.setPeriod(Duration.seconds(1));
+        comPortListServise.setOnSucceeded(e -> {
+            ComboBox1.setItems(comPortListServise.getName());
+            ComboBox1.setValue(comPortName);
         });
-        comPortServise.start();
-        ObservableList<String> comList = FXCollections.observableArrayList("Java", "JavaScript", "C#", "Python");
+        comPortListServise.start();
+        ObservableList<String> comList = FXCollections.observableArrayList("4800", "9600", "115200");
         ComboBox2.setItems(comList);
+        ComboBox2.setValue("9600");
            }
+
 }

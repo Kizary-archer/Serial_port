@@ -1,13 +1,9 @@
 package SerialPort;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -23,24 +19,24 @@ public class ComSelecterController implements Initializable {
     ListView<String> ListView1;
     @FXML
     Label title;
-    @FXML
-    Button button;
 
-   private ComPortServise comPortServise = new ComPortServise();
+   private ComPortListServise comPortListServise = new ComPortListServise();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //создание сервиса со списком COM портов
-        comPortServise.setOnSucceeded(event -> {
-            ListView1.setItems(comPortServise.getName());
+        comPortListServise.setOnSucceeded(event -> {
+            ListView1.setItems(comPortListServise.getName());
         });
-        comPortServise.setPeriod(Duration.seconds(1));//обновление списка каждую секунду
-        comPortServise.start();
+        comPortListServise.setPeriod(Duration.seconds(1));//обновление списка каждую секунду
+        comPortListServise.start();
+
     }
 
     @FXML
     private void ClickListView() {
+
         if(ListView1.getSelectionModel().getSelectedItem() == null) return;
-        comPortServise.cancel();
+        comPortListServise.cancel();
         SerialmonitorController.setComPortName(ListView1.getSelectionModel().getSelectedItem());
         Stage stage = (Stage)ListView1.getScene().getWindow();
         stage.close();

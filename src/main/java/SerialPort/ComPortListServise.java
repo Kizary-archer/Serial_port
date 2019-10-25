@@ -7,7 +7,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
 
-public class  ComPortServise extends ScheduledService {
+public class ComPortListServise extends ScheduledService {
 
    private ObservableList<String> names;
     ObservableList<String> getName(){return names;}
@@ -23,7 +23,7 @@ public class  ComPortServise extends ScheduledService {
                         names.add(port.getSystemPortName());
                     }
 
-                return names;
+                return null;
             }
         };
     }
