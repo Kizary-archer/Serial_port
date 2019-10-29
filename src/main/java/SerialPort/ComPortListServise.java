@@ -22,7 +22,6 @@ public class ComPortListServise extends ScheduledService {
                     for (SerialPort port : serialPort) {
                         names.add(port.getSystemPortName());
                     }
-
                 return null;
             }
         };

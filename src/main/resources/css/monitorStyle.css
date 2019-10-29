@@ -19,6 +19,6 @@
 -fx-padding:5;
 -fx-background-color: aqua;
 }
-Button{
--fx-background-color: red;
+ComboBox{
+-fx-background-color: white;
 }

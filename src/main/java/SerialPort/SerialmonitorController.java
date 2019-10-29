@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,11 +26,9 @@ public class SerialmonitorController implements Initializable {
     @FXML
     TextField TextField1 = new TextField();
     @FXML
-    volatile TextArea TextArea1 = new TextArea();
-    @FXML
-    Parent root;
+    TextArea TextArea1 = new TextArea();
 
-    private static String comPortName;
+    private static String comPortName = null;
     private ComPortListenerServise comPortListenerServise;
 
     static void setComPortName(String name){comPortName = name;}
@@ -36,13 +36,17 @@ public class SerialmonitorController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-       // SerialPort comPort = SerialPort.getCommPort("COM4");
-          //  comPort.openPort();
-          //  comPort.setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
-            //showAlertWithoutHeaderText();
-        comPortListenerServise = new ComPortListenerServise("COM3");
+        comPortListenerServise = new ComPortListenerServise();
+        comPortListenerServise.setPeriod(Duration.seconds(1));
         comPortListenerServise.setOnSucceeded(e->{
             TextArea1.appendText((String)comPortListenerServise.getValue());
+            comPortListenerServise.setPeriod(Duration.millis(200));
+            System.out.println("yeees");
+        });
+        comPortListenerServise.setOnFailed(e->{
+            System.out.println("faled");
+            comPortListenerServise.setComPort(comPortName);
+            comPortListenerServise.setPeriod((Duration.seconds(1)));
         });
         comPortListenerServise.start();
 
@@ -54,8 +58,6 @@ public class SerialmonitorController implements Initializable {
         //byte[] byteData = TextField1.getText().getBytes();
        // comPort.writeBytes(byteData, byteData.length);
         TextArea1.appendText(comPortName);
-        ComPortListenerServise comPortListener = new ComPortListenerServise(comPortName);
-
     }
     public void settingClick(MouseEvent actionEvent) throws IOException, InterruptedException {
         ComPortListServise comPortListServise = new ComPortListServise();

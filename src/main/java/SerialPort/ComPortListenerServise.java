@@ -7,22 +7,34 @@ import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 
 public class ComPortListenerServise extends ScheduledService{
+
     private SerialPort comPort = null;
 
-    ComPortListenerServise(String comName){
-        this.comPort = SerialPort.getCommPort(comName);
+    ComPortListenerServise(String comName){setComPort(comName);}
+
+    ComPortListenerServise() {}
+
+    void setComPort(String comName){
+        try {
+            if (comPort != null) comPort.closePort();
+            comPort = SerialPort.getCommPort(comName);
+            comPort.openPort();
+            comPort.setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
-
-    ComPortListenerServise() { this.comPort = null;}
-
-    void setComPortName(String comName){this.comPort = SerialPort.getCommPort(comName);}
     @Override
     protected Task createTask() {
         return  new  Task<String> () {
             @Override
             protected String call() throws Exception {
-                if(comPort ==null){System.out.println("dddddddddddddddddd");}
-                System.out.println(comPort.getSystemPortName());
+                if (!comPort.isOpen()){
+                getOnFailed();
+                return "";
+                }
+
                 return "bkj";
             }
 
