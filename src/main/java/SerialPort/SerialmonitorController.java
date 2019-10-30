@@ -37,16 +37,13 @@ public class SerialmonitorController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         comPortListenerServise = new ComPortListenerServise();
-        comPortListenerServise.setPeriod(Duration.seconds(1));
         comPortListenerServise.setOnSucceeded(e->{
             TextArea1.appendText((String)comPortListenerServise.getValue());
-            comPortListenerServise.setPeriod(Duration.millis(200));
-            System.out.println("yeees");
+            comPortListenerServise.setPeriod(Duration.millis(50));
         });
         comPortListenerServise.setOnFailed(e->{
-            System.out.println("faled");
-            comPortListenerServise.setComPort(comPortName);
-            comPortListenerServise.setPeriod((Duration.seconds(1)));
+            if (comPortName != null) comPortListenerServise.setComPort(comPortName);
+            comPortListenerServise.setPeriod((Duration.millis(500)));
         });
         comPortListenerServise.start();
 
@@ -54,10 +51,8 @@ public class SerialmonitorController implements Initializable {
     }
 
     public void enterButtonClick(ActionEvent actionEvent) throws IOException {//отправка данных
-       // TextArea1.clear();
-        //byte[] byteData = TextField1.getText().getBytes();
-       // comPort.writeBytes(byteData, byteData.length);
-        TextArea1.appendText(comPortName);
+     comPortListenerServise.writeComPort(TextField1.getText());
+     TextField1.clear();
     }
     public void settingClick(MouseEvent actionEvent) throws IOException, InterruptedException {
         ComPortListServise comPortListServise = new ComPortListServise();
@@ -81,6 +76,10 @@ public class SerialmonitorController implements Initializable {
         ObservableList<String> comList = FXCollections.observableArrayList("4800", "9600", "115200");
         ComboBox2.setItems(comList);
         ComboBox2.setValue("9600");
+
+        ComboBox1.setOnMousePressed(e ->{
+            System.out.println("sfsdfsdf");
+        });
            }
 
 }

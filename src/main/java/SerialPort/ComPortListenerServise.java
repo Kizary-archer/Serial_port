@@ -6,6 +6,8 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 
+import java.util.Arrays;
+
 public class ComPortListenerServise extends ScheduledService{
 
     private SerialPort comPort = null;
@@ -25,17 +27,26 @@ public class ComPortListenerServise extends ScheduledService{
             e.printStackTrace();
         }
     }
+    void writeComPort(String out){
+        if (comPort == null) return;
+        byte[] byteData = out.getBytes();
+        comPort.writeBytes(byteData, byteData.length);
+    }
     @Override
     protected Task createTask() {
         return  new  Task<String> () {
             @Override
             protected String call() throws Exception {
-                if (!comPort.isOpen()){
-                getOnFailed();
+                if (!comPort.isOpen()){getOnFailed();}
+                try {
+                    if (comPort.bytesAvailable() != 0)
+                    {
+                        byte[] readBuffer = new byte[comPort.bytesAvailable()];
+                        comPort.readBytes(readBuffer, readBuffer.length);
+                        return new String(readBuffer);
+                    }
+                } catch (Exception e) { e.printStackTrace(); }
                 return "";
-                }
-
-                return "bkj";
             }
 
 
