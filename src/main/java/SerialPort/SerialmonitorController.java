@@ -27,20 +27,20 @@ public class SerialmonitorController implements Initializable {
     @FXML
     TextField TextField1 = new TextField();
     @FXML
-    ListView ListView1 = new ListView();
+    ListView<String> ListView1 = new ListView<String>();
 
     private static String comPortName = null;
-    private ComPortListenerServise comPortListenerServise;
+    private ComPortListenerServise comPortListenerServise = new ComPortListenerServise();
+    private  ObservableList<String> ComLog = FXCollections.observableArrayList();
 
     static void setComPortName(String name){comPortName = name;}
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ListView1.setItems(ComLog);
 
-        comPortListenerServise = new ComPortListenerServise();
         comPortListenerServise.setOnSucceeded(e->{
-            //ListView1.set
-            comPortListenerServise.setPeriod(Duration.millis(50));
+            comPortListenerServise.setPeriod(Duration.millis(100));
         });
         comPortListenerServise.setOnFailed(e->{
             if (comPortName != null) comPortListenerServise.setComPort(comPortName);

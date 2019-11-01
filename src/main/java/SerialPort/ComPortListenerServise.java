@@ -13,7 +13,6 @@ public class ComPortListenerServise extends ScheduledService{
     private SerialPort comPort = null;
 
     ComPortListenerServise(String comName){setComPort(comName);}
-
     ComPortListenerServise() {}
 
     void setComPort(String comName){
@@ -37,7 +36,7 @@ public class ComPortListenerServise extends ScheduledService{
         return  new  Task<String> () {
             @Override
             protected String call() throws Exception {
-                while (comPort.isOpen() & isCancelled()) {
+                if (!comPort.isOpen()) {getOnFailed();}
                     try {
                         if (comPort.bytesAvailable() != 0) {
                             byte[] readBuffer = new byte[comPort.bytesAvailable()];
@@ -47,7 +46,7 @@ public class ComPortListenerServise extends ScheduledService{
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
+
                 return "";
             }
 
