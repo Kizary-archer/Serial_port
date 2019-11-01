@@ -37,15 +37,17 @@ public class ComPortListenerServise extends ScheduledService{
         return  new  Task<String> () {
             @Override
             protected String call() throws Exception {
-                if (!comPort.isOpen()){getOnFailed();}
-                try {
-                    if (comPort.bytesAvailable() != 0)
-                    {
-                        byte[] readBuffer = new byte[comPort.bytesAvailable()];
-                        comPort.readBytes(readBuffer, readBuffer.length);
-                        return new String(readBuffer);
+                while (comPort.isOpen() & isCancelled()) {
+                    try {
+                        if (comPort.bytesAvailable() != 0) {
+                            byte[] readBuffer = new byte[comPort.bytesAvailable()];
+                            comPort.readBytes(readBuffer, readBuffer.length);
+                            return new String(readBuffer);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) { e.printStackTrace(); }
+                }
                 return "";
             }
 

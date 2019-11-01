@@ -7,9 +7,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -19,12 +21,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SerialmonitorController implements Initializable {
+
     @FXML
     VBox VBoxMainMonitor;
     @FXML
     TextField TextField1 = new TextField();
     @FXML
-    TextArea TextArea1 = new TextArea();
+    ListView ListView1 = new ListView();
 
     private static String comPortName = null;
     private ComPortListenerServise comPortListenerServise;
@@ -36,7 +39,7 @@ public class SerialmonitorController implements Initializable {
 
         comPortListenerServise = new ComPortListenerServise();
         comPortListenerServise.setOnSucceeded(e->{
-            TextArea1.appendText((String)comPortListenerServise.getValue());
+            //ListView1.set
             comPortListenerServise.setPeriod(Duration.millis(50));
         });
         comPortListenerServise.setOnFailed(e->{
