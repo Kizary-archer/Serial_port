@@ -39,15 +39,19 @@ public class SerialmonitorController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ListView1.setItems(ComLog);
 
-        comPortListenerServise.setOnSucceeded(e->{
-            comPortListenerServise.setPeriod(Duration.millis(100));
+        comPortListenerServise.setOnSucceeded(e->{ //событие срабатывает при нормальной работе порта
+            if (comPortName == null)comPortListenerServise.setComPort(comPortName);
+            else {
+                String str = (String) comPortListenerServise.getValue();
+                String[] strResMas = str.split("\n");
+                comPortListenerServise.setPeriod(Duration.millis(100));
+            }
         });
         comPortListenerServise.setOnFailed(e->{
-            if (comPortName != null) comPortListenerServise.setComPort(comPortName);
-            comPortListenerServise.setPeriod((Duration.millis(500)));
+            comPortName = null;
+            App.comSelecter();
         });
         comPortListenerServise.start();
-
 
     }
 

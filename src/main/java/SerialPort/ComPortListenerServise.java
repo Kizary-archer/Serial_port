@@ -36,21 +36,21 @@ public class ComPortListenerServise extends ScheduledService{
         return  new  Task<String> () {
             @Override
             protected String call() throws Exception {
-                if (!comPort.isOpen()) {getOnFailed();}
+                if (comPort == null) {return "";} //проверка открыт ли порт
+                else {
                     try {
                         if (comPort.bytesAvailable() != 0) {
                             byte[] readBuffer = new byte[comPort.bytesAvailable()];
                             comPort.readBytes(readBuffer, readBuffer.length);
                             return new String(readBuffer);
                         }
-                    } catch (Exception e) {
+                    } catch (Exception e) {//при ошибке порта инициализируем порт заново
                         e.printStackTrace();
+                        comPort = null;
                     }
-
+                }
                 return "";
             }
-
-
         };
     }
 }
