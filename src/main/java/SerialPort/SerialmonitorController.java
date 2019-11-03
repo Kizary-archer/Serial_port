@@ -34,18 +34,20 @@ public class SerialmonitorController implements Initializable {
     ListView<String> ListView1 = new ListView<String>();
 
     private String comPortName = null;
-    private ComPortListenerServise comPortListenerServise = new ComPortListenerServise();
+    private ComPortListenerServise comPortListenerServise;
     private ObservableList<String> ComLog = FXCollections.observableArrayList();
 
-    void setComPortName(String name){comPortName = name;}
+    void setComPort(String name){comPortName = name;}
+    Stage getParentStage(){return (Stage) ListView1.getScene().getWindow();}
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ListView1.setItems(ComLog);
-
+        ComSelecterController comSelecterController = new ComSelecterController(this);
     }
     void startListenServise()
     {
+        comPortListenerServise = new ComPortListenerServise(comPortName);
         comPortListenerServise.setOnSucceeded(e->{ //событие срабатывает при нормальной работе порта
             if (comPortName == null)comPortListenerServise.setComPort(comPortName);
             else {
