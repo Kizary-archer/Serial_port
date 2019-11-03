@@ -49,8 +49,7 @@ public class App extends Application {
                  e.printStackTrace();
              }
              comSelectWindow.setScene(scene);
-
-             // Specifies the modality for new window.
+         // Specifies the modality for new window.
              comSelectWindow.initModality(Modality.WINDOW_MODAL);
              comSelectWindow.initStyle(StageStyle.UNDECORATED);
              // Specifies the owner Window (parent) for new window

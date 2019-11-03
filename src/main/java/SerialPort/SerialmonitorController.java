@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -14,6 +15,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -29,16 +33,19 @@ public class SerialmonitorController implements Initializable {
     @FXML
     ListView<String> ListView1 = new ListView<String>();
 
-    private static String comPortName = null;
+    private String comPortName = null;
     private ComPortListenerServise comPortListenerServise = new ComPortListenerServise();
-    private  ObservableList<String> ComLog = FXCollections.observableArrayList();
+    private ObservableList<String> ComLog = FXCollections.observableArrayList();
 
-    static void setComPortName(String name){comPortName = name;}
+    void setComPortName(String name){comPortName = name;}
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ListView1.setItems(ComLog);
 
+    }
+    void startListenServise()
+    {
         comPortListenerServise.setOnSucceeded(e->{ //событие срабатывает при нормальной работе порта
             if (comPortName == null)comPortListenerServise.setComPort(comPortName);
             else {
@@ -52,7 +59,6 @@ public class SerialmonitorController implements Initializable {
             App.comSelecter();
         });
         comPortListenerServise.start();
-
     }
 
     public void enterButtonClick(ActionEvent actionEvent) throws IOException {//отправка данных

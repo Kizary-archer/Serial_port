@@ -20,7 +20,12 @@ public class ComSelecterController implements Initializable {
     @FXML
     Label title;
 
+   private Stage stage;
+   private SerialmonitorController serialmonitorController;
    private ComPortListServise comPortListServise = new ComPortListServise();
+   ComSelecterController(SerialmonitorController serialmonitorController){
+    this.serialmonitorController = serialmonitorController;
+   }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //создание сервиса со списком COM портов
@@ -37,7 +42,7 @@ public class ComSelecterController implements Initializable {
 
         if(ListView1.getSelectionModel().getSelectedItem() == null) return;
         comPortListServise.cancel();
-        SerialmonitorController.setComPortName(ListView1.getSelectionModel().getSelectedItem());
+        serialmonitorController.setComPortName(ListView1.getSelectionModel().getSelectedItem());
         Stage stage = (Stage)ListView1.getScene().getWindow();
         stage.close();
     }
