@@ -1,17 +1,11 @@
 package SerialPort;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,7 +19,7 @@ public class ComSelecterController implements Initializable {
     @FXML
     Label title;
 
-    void setMonitorController(SerialmonitorController serialmonitorController) {
+    void setParentController(SerialmonitorController serialmonitorController) {
         this.serialmonitorController = serialmonitorController;
     }
    private SerialmonitorController serialmonitorController;
