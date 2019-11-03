@@ -13,7 +13,6 @@ public class ComPortListenerServise extends ScheduledService{
     private SerialPort comPort = null;
 
     ComPortListenerServise(String comName){setComPort(comName);}
-    ComPortListenerServise() {}
 
     void setComPort(String comName){
         try {

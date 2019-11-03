@@ -25,28 +25,11 @@ public class ComSelecterController implements Initializable {
     @FXML
     Label title;
 
+    void setMonitorController(SerialmonitorController serialmonitorController) {
+        this.serialmonitorController = serialmonitorController;
+    }
    private SerialmonitorController serialmonitorController;
    private ComPortListServise comPortListServise = new ComPortListServise();
-   ComSelecterController(SerialmonitorController serialmonitorController){
-    this.serialmonitorController = serialmonitorController;
-    Stage stage = new Stage();
-       // Load the FXML file
-       try {
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("comselecter.fxml"));
-           // Set this class as the controller
-          // loader.setController(this);
-           // Load the scene
-           Scene scene = new Scene(App.loadFXML("comselecter"));
-           stage.setScene(scene);
-       } catch (IOException e) {
-           e.printStackTrace();
-       }
-       // Specifies the modality for new window.
-       stage.initModality(Modality.WINDOW_MODAL);
-       stage.initStyle(StageStyle.UNDECORATED);
-       // Specifies the owner Window (parent) for new window
-       stage.initOwner(App.getStage());
-   }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

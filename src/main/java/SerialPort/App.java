@@ -26,6 +26,7 @@ public class App extends Application {
         stage.setScene(scene);
        // stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
+        comSelecter();
         }
 
     static void setRoot(String fxml) throws IOException {
@@ -37,17 +38,14 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
-     static void comSelecter(){
+     static void comSelecter() throws IOException {
              Stage rootStage = getStage();
              // New window (Stage)
              Stage comSelectWindow = new Stage();
-             Scene scene = null;
-             try {
-                 scene = new Scene(loadFXML("comselecter"));
-             } catch (IOException e) {
-                 e.printStackTrace();
-             }
+             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getClassLoader().getResource ("comselecter.fxml"));
+             Scene scene = new Scene((Parent) fxmlLoader.load());
              comSelectWindow.setScene(scene);
+             ComSelecterController comSelecterController = fxmlLoader.<ComSelecterController>getController();
          // Specifies the modality for new window.
              comSelectWindow.initModality(Modality.WINDOW_MODAL);
              comSelectWindow.initStyle(StageStyle.UNDECORATED);

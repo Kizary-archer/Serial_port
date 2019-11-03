@@ -43,11 +43,7 @@ public class SerialmonitorController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ListView1.setItems(ComLog);
-        ComSelecterController comSelecterController = new ComSelecterController(this);
-    }
-    void startListenServise()
-    {
-        comPortListenerServise = new ComPortListenerServise(comPortName);
+        /*comPortListenerServise = new ComPortListenerServise(comPortName);
         comPortListenerServise.setOnSucceeded(e->{ //событие срабатывает при нормальной работе порта
             if (comPortName == null)comPortListenerServise.setComPort(comPortName);
             else {
@@ -58,9 +54,8 @@ public class SerialmonitorController implements Initializable {
         });
         comPortListenerServise.setOnFailed(e->{
             comPortName = null;
-            App.comSelecter();
         });
-        comPortListenerServise.start();
+        comPortListenerServise.start();*/
     }
 
     public void enterButtonClick(ActionEvent actionEvent) throws IOException {//отправка данных
