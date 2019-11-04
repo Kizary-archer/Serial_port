@@ -17,6 +17,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class SerialmonitorController implements Initializable {
@@ -38,28 +39,28 @@ public class SerialmonitorController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ListView1.setItems(ComLog);
         comPortListenerServise.setPeriod(Duration.millis(100));
+        comPortListenerServise.setRestartOnFailure(false);
         comPortListenerServise.setOnSucceeded(e->{ //событие срабатывает при нормальной работе порта
             if (!((String) comPortListenerServise.getValue()).equals(""))
             {
-                String str = (String) comPortListenerServise.getValue();
-                String[] strResMas = str.split("\n");
+                String outStr = (String) comPortListenerServise.getValue();
+                String[] strResMas = outStr.split("\n");
+                ComLog.addAll(Arrays.asList(strResMas));
             }
         });
         comPortListenerServise.setOnFailed(e->{
             comPortName = null;
-            comPortListenerServise.cancel();
             try {
                 App.comSelecter(this);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            System.out.println("gdfffffffffffffffffffffffffffff");
         });
     }
     void setComPort(String name){
         this.comPortName = name;
         comPortListenerServise.setComPort(name);
-        comPortListenerServise.start();
+        comPortListenerServise.restart();
     }
 
     public void enterButtonClick(ActionEvent actionEvent) {//отправка данных
@@ -89,7 +90,7 @@ public class SerialmonitorController implements Initializable {
         comPortListServise.start();
         ObservableList<String> comList = FXCollections.observableArrayList("4800", "9600", "115200");
         ComboBox2.setItems(comList);
-        ComboBox2.setValue("9600");
+        ComboBox2.setValue("115200");
 
         ComboBox1.setOnMousePressed(e ->{
             System.out.println("sfsdfsdf");

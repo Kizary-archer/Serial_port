@@ -19,17 +19,22 @@ public class ComSelecterController implements Initializable {
     @FXML
     Label title;
 
+   private SerialmonitorController serialmonitorController;
+   private ComPortListServise comPortListServise = new ComPortListServise();
+
     void setParentController(SerialmonitorController serialmonitorController) {
         this.serialmonitorController = serialmonitorController;
     }
-   private SerialmonitorController serialmonitorController;
-   private ComPortListServise comPortListServise = new ComPortListServise();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         //создание сервиса со списком COM портов
+        comPortListServise.setRestartOnFailure(false);
         comPortListServise.setOnSucceeded(event -> {
             ListView1.setItems(comPortListServise.getName());
+        });
+        comPortListServise.setOnFailed(e->{
+            System.out.println("qqqqqqqqqqqqq");
         });
         comPortListServise.setPeriod(Duration.seconds(1));//обновление списка каждую секунду
         comPortListServise.start();
@@ -38,9 +43,8 @@ public class ComSelecterController implements Initializable {
 
     @FXML
     private void ClickListView() {
-
         if(ListView1.getSelectionModel().getSelectedItem() == null) return;
-        comPortListServise.cancel();
+        comPortListServise.stopServise(true);
         serialmonitorController.setComPort(ListView1.getSelectionModel().getSelectedItem());
         Stage stage = (Stage)ListView1.getScene().getWindow();
         stage.close();

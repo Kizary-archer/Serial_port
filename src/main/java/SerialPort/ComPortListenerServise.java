@@ -35,7 +35,6 @@ public class ComPortListenerServise extends ScheduledService{
         return  new  Task<String> () {
             @Override
             protected String call() throws Exception {
-                getOnFailed();
                     try {
                         if (comPort.bytesAvailable() != 0) {
                             byte[] readBuffer = new byte[comPort.bytesAvailable()];
