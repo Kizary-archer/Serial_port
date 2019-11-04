@@ -30,30 +30,34 @@ public class SerialmonitorController implements Initializable {
     private ComPortListenerServise comPortListenerServise;
     private ObservableList<String> ComLog = FXCollections.observableArrayList();
 
-    void setComPort(String name){this.comPortName = name;}
-    Stage getParentStage(){return (Stage) ListView1.getScene().getWindow();}
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ListView1.setItems(ComLog);
-        /*comPortListenerServise = new ComPortListenerServise(comPortName);
+
+    }
+    void setComPort(String name){
+        this.comPortName = name;
+       // comPortListenerServise = new ComPortListenerServise(name);
+        comPortListenerServise.setPeriod(Duration.millis(100));
         comPortListenerServise.setOnSucceeded(e->{ //событие срабатывает при нормальной работе порта
-            if (comPortName == null)comPortListenerServise.setComPort(comPortName);
-            else {
+            if (!((String) comPortListenerServise.getValue()).equals(""))
+             {
                 String str = (String) comPortListenerServise.getValue();
                 String[] strResMas = str.split("\n");
-                comPortListenerServise.setPeriod(Duration.millis(100));
-            }
+             }
         });
         comPortListenerServise.setOnFailed(e->{
             comPortName = null;
         });
-        comPortListenerServise.start();*/
-    }
 
+    }
     public void enterButtonClick(ActionEvent actionEvent) {//отправка данных
+     if(TextField1.getLength() == 0)return;
      comPortListenerServise.writeComPort(TextField1.getText());
      TextField1.clear();
+
     }
     public void settingClick(MouseEvent actionEvent) {
         ComPortListServise comPortListServise = new ComPortListServise();

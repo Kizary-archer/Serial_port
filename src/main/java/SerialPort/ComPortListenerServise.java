@@ -20,6 +20,7 @@ public class ComPortListenerServise extends ScheduledService{
             comPort = SerialPort.getCommPort(comName);
             comPort.openPort();
             comPort.setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
+            start();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -35,8 +36,6 @@ public class ComPortListenerServise extends ScheduledService{
         return  new  Task<String> () {
             @Override
             protected String call() throws Exception {
-                if (comPort == null) {return "";} //проверка открыт ли порт
-                else {
                     try {
                         if (comPort.bytesAvailable() != 0) {
                             byte[] readBuffer = new byte[comPort.bytesAvailable()];
@@ -46,8 +45,9 @@ public class ComPortListenerServise extends ScheduledService{
                     } catch (Exception e) {//при ошибке порта инициализируем порт заново
                         e.printStackTrace();
                         comPort = null;
+                        getOnFailed();
                     }
-                }
+
                 return "";
             }
         };
