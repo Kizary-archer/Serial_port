@@ -15,9 +15,8 @@ import java.io.IOException;
  */
 public class App extends Application {
 
-    private  Stage primaryStage;
-
-     Stage getStage(){return primaryStage;}
+    private static Stage primaryStage;
+    static Stage getStage(){return primaryStage;}
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -30,7 +29,7 @@ public class App extends Application {
         comSelecter(serialmonitorController);
         }
 
-    void comSelecter(SerialmonitorController serialmonitorController) throws IOException {
+    static void comSelecter(SerialmonitorController serialmonitorController) throws IOException {
          Stage rootStage = getStage();
          // New window (Stage)
          Stage comSelectWindow = new Stage();

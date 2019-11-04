@@ -14,6 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -27,7 +29,7 @@ public class SerialmonitorController implements Initializable {
     ListView<String> ListView1 = new ListView<String>();
 
     private String comPortName = null;
-    private ComPortListenerServise comPortListenerServise;
+    private ComPortListenerServise comPortListenerServise = new ComPortListenerServise();
     private ObservableList<String> ComLog = FXCollections.observableArrayList();
 
 
@@ -35,24 +37,31 @@ public class SerialmonitorController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ListView1.setItems(ComLog);
-
-    }
-    void setComPort(String name){
-        this.comPortName = name;
-       // comPortListenerServise = new ComPortListenerServise(name);
         comPortListenerServise.setPeriod(Duration.millis(100));
         comPortListenerServise.setOnSucceeded(e->{ //событие срабатывает при нормальной работе порта
             if (!((String) comPortListenerServise.getValue()).equals(""))
-             {
+            {
                 String str = (String) comPortListenerServise.getValue();
                 String[] strResMas = str.split("\n");
-             }
+            }
         });
         comPortListenerServise.setOnFailed(e->{
             comPortName = null;
+            comPortListenerServise.cancel();
+            try {
+                App.comSelecter(this);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println("gdfffffffffffffffffffffffffffff");
         });
-
     }
+    void setComPort(String name){
+        this.comPortName = name;
+        comPortListenerServise.setComPort(name);
+        comPortListenerServise.start();
+    }
+
     public void enterButtonClick(ActionEvent actionEvent) {//отправка данных
      if(TextField1.getLength() == 0)return;
      comPortListenerServise.writeComPort(TextField1.getText());
