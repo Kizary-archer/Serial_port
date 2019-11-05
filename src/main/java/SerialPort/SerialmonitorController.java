@@ -41,11 +41,18 @@ public class SerialmonitorController implements Initializable {
         comPortListenerServise.setPeriod(Duration.millis(100));
         comPortListenerServise.setRestartOnFailure(false);
         comPortListenerServise.setOnSucceeded(e->{ //событие срабатывает при нормальной работе порта
-            if (!((String) comPortListenerServise.getValue()).equals(""))
+            if (!((String) comPortListenerServise.getValue()).isEmpty())//пустой вывод сервиса не обрабатывается
             {
-                String outStr = (String) comPortListenerServise.getValue();
-                String[] strResMas = outStr.split("\n");
-                ComLog.addAll(Arrays.asList(strResMas));
+                String outStr = (String) comPortListenerServise.getValue();//данные полученные с COM порта
+                if (ComLog.size()!=0){
+                   String a = ComLog.get(ComLog.size()-1); //последняя строка лога
+                    if(!a.endsWith("\r")){//если в строке нет перевода каретки добавляем недостающую часть
+                        String str = outStr.substring(0,outStr.indexOf("\r"));
+                        ComLog.set(ComLog.size()-1, a.concat(str));
+                        outStr = outStr.substring(outStr.indexOf("\r"),outStr.length()-1);
+                    }
+                }
+                ComLog.addAll(outStr.split("\n"));
             }
         });
         comPortListenerServise.setOnFailed(e->{
