@@ -14,12 +14,12 @@ public class ComPortListenerServise extends ScheduledService{
 
     ComPortListenerServise() {}
 
-    void setComPort(String comName){
+    void setComPort(String comName,int BaundRate){
         try {
             if (comPort != null) comPort.closePort();
             comPort = SerialPort.getCommPort(comName);
             comPort.openPort();
-            comPort.setComPortParameters(115200, 8, 1, SerialPort.NO_PARITY);
+            comPort.setComPortParameters(BaundRate, 8, 1, SerialPort.NO_PARITY);
             }
         catch (Exception e){
             e.printStackTrace();

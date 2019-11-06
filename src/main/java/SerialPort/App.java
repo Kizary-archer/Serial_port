@@ -34,7 +34,7 @@ public class App extends Application {
          // New window (Stage)
          Stage comSelectWindow = new Stage();
          FXMLLoader fxmlLoader = new FXMLLoader(App.class.getClassLoader().getResource ("comselecter.fxml"));
-         Scene scene = new Scene((Parent) fxmlLoader.load());
+         Scene scene = new Scene(fxmlLoader.load());
          comSelectWindow.setScene(scene);
          // Specifies the modality for new window.
          comSelectWindow.initModality(Modality.WINDOW_MODAL);

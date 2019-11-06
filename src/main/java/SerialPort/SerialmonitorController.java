@@ -47,9 +47,9 @@ public class SerialmonitorController implements Initializable {
                 if (ComLog.size()!=0){
                    String a = ComLog.get(ComLog.size()-1); //последняя строка лога
                     if(!a.endsWith("\r")){//если в строке нет перевода каретки добавляем недостающую часть
-                        String str = outStr.substring(0,outStr.indexOf("\r"));
+                        String str = outStr.substring(0,outStr.indexOf("\n"));
                         ComLog.set(ComLog.size()-1, a.concat(str));
-                        outStr = outStr.substring(outStr.indexOf("\r"),outStr.length()-1);
+                        outStr = outStr.substring(outStr.indexOf("\n")+1,outStr.length()-1);
                     }
                 }
                 ComLog.addAll(outStr.split("\n"));

@@ -33,9 +33,6 @@ public class ComSelecterController implements Initializable {
         comPortListServise.setOnSucceeded(event -> {
             ListView1.setItems(comPortListServise.getName());
         });
-        comPortListServise.setOnFailed(e->{
-            System.out.println("qqqqqqqqqqqqq");
-        });
         comPortListServise.setPeriod(Duration.seconds(1));//обновление списка каждую секунду
         comPortListServise.start();
 
