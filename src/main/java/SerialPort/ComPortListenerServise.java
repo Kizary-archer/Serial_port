@@ -14,6 +14,8 @@ public class ComPortListenerServise extends ScheduledService{
 
     ComPortListenerServise() {}
 
+    void setBaundRate(int baundRate){comPort.setBaudRate(baundRate);}
+
     void setComPort(String comName,int BaundRate){
         try {
             if (comPort != null) comPort.closePort();

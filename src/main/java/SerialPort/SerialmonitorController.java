@@ -12,12 +12,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class SerialmonitorController implements Initializable {
@@ -30,6 +28,8 @@ public class SerialmonitorController implements Initializable {
     ListView<String> ListView1 = new ListView<String>();
 
     private String comPortName = null;
+    private  String test = "";
+    private int baundRate = 115200;
     private ComPortListenerServise comPortListenerServise = new ComPortListenerServise();
     private ObservableList<String> ComLog = FXCollections.observableArrayList();
 
@@ -44,6 +44,7 @@ public class SerialmonitorController implements Initializable {
             if (!((String) comPortListenerServise.getValue()).isEmpty())//пустой вывод сервиса не обрабатывается
             {
                 String outStr = (String) comPortListenerServise.getValue();//данные полученные с COM порта
+                test += outStr;
                 if (ComLog.size()!=0){
                    String a = ComLog.get(ComLog.size()-1); //последняя строка лога
                     if(!a.endsWith("\r")){//если в строке нет перевода каретки добавляем недостающую часть
@@ -52,7 +53,7 @@ public class SerialmonitorController implements Initializable {
                         outStr = outStr.substring(outStr.indexOf("\n")+1,outStr.length()-1);
                     }
                 }
-                ComLog.addAll(outStr.split("\n"));
+                ComLog.addAll(outStr.split("\r\n"));
             }
         });
         comPortListenerServise.setOnFailed(e->{
@@ -66,7 +67,7 @@ public class SerialmonitorController implements Initializable {
     }
     void setComPort(String name){
         this.comPortName = name;
-        comPortListenerServise.setComPort(name);
+        comPortListenerServise.setComPort(name,baundRate);
         comPortListenerServise.restart();
     }
 
@@ -97,11 +98,15 @@ public class SerialmonitorController implements Initializable {
         comPortListServise.start();
         ObservableList<String> comList = FXCollections.observableArrayList("4800", "9600", "115200");
         ComboBox2.setItems(comList);
-        ComboBox2.setValue("115200");
+        ComboBox2.setValue(Integer.toString(baundRate));
 
-        ComboBox1.setOnMousePressed(e ->{
+        ComboBox1.setOnAction(e ->{
             System.out.println("sfsdfsdf");
         });
+        ComboBox2.setOnAction(e->{
+           baundRate = Integer.parseInt(ComboBox2.getSelectionModel().getSelectedItem());
+           comPortListenerServise.setBaundRate(baundRate);
+           ComLog.add("Скорость порта изменена на "+baundRate+" бод\n");
+        });
            }
-
 }
