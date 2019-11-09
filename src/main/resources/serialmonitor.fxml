@@ -13,8 +13,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="VBoxMainMonitor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" stylesheets="@css/monitorStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SerialPort.SerialmonitorController">
-   <ListView fx:id="ListView1" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS" />
+<VBox fx:id="VBoxMainMonitor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color: aqua;" stylesheets="@css/monitorStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SerialPort.SerialmonitorController">
+   <ListView fx:id="ListView1" cacheShape="false" centerShape="false" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" scaleShape="false" VBox.vgrow="ALWAYS" />
 
          <GridPane fx:id="commandPane">
          <TextField fx:id="TextField1" GridPane.columnIndex="0" />

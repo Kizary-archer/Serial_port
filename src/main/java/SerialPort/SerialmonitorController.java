@@ -53,7 +53,8 @@ public class SerialmonitorController implements Initializable {
                         outStr = outStr.substring(outStr.indexOf("\n")+1,outStr.length()-1);
                     }
                 }
-                ComLog.addAll(outStr.split("\r\n"));
+                ComLog.addAll(outStr.split("\n"));
+
             }
         });
         comPortListenerServise.setOnFailed(e->{
