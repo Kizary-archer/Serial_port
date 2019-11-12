@@ -1,6 +1,5 @@
 package SerialPort;
 
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,8 +26,7 @@ public class SerialmonitorController implements Initializable {
     ListView<String> ListView1 = new ListView<String>();
 
     private String comPortName = null;
-    private  String test = "";
-    private int baundRate = 115200;
+    private int baundRate = 115200; //скорость порта
     private ComPortListenerServise comPortListenerServise = new ComPortListenerServise();
     private ObservableList<String> ComLog = FXCollections.observableArrayList();
 
@@ -39,25 +36,38 @@ public class SerialmonitorController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         ListView1.setItems(ComLog);
         comPortListenerServise.setPeriod(Duration.millis(100));
-        comPortListenerServise.setRestartOnFailure(false);
+        comPortListenerServise.setRestartOnFailure(false); //при ошибке сервис не автозапускается
         comPortListenerServise.setOnSucceeded(e->{ //событие срабатывает при нормальной работе порта
             if (!((String) comPortListenerServise.getValue()).isEmpty())//пустой вывод сервиса не обрабатывается
             {
                 String outStr = (String) comPortListenerServise.getValue();//данные полученные с COM порта
-                test += outStr;
                 if (ComLog.size()!=0){
-                   String a = ComLog.get(ComLog.size()-1); //последняя строка лога
-                    if(!a.endsWith("\r")){//если в строке нет перевода каретки добавляем недостающую часть
-                        String str = outStr.substring(0,outStr.indexOf("\n"));
-                        ComLog.set(ComLog.size()-1, a.concat(str));
-                        outStr = outStr.substring(outStr.indexOf("\n")+1,outStr.length()-1);
+                   String lastStr = ComLog.get(ComLog.size()-1); //последняя строка лога
+                    if(lastStr.endsWith(" ")){//если строка заканчивается пробелом, добавляем недостающую часть
+                        lastStr.trim();//удаляем пробел в конце
+                        String str; //строка склейки
+                        if(outStr.contains("\n"))
+                        {
+                            str = outStr.substring(0, outStr.indexOf("\n"));//если есть символ конца строки, режем до него
+                            outStr = outStr.substring(outStr.indexOf("\n") + 1, outStr.length() - 1); //удаляем приклеенную часть из основной строки
+                        }
+                        else {
+                            str = outStr;//если нет, берём всю строку
+                            outStr = "";
+                        }
+                            lastStr = lastStr.concat(str);
+                            lastStr = lastStr.replaceAll("[\n\r]","");//удаляем спецсимволы если они пршли в разных пакетах
+
+                            ComLog.set(ComLog.size() - 1, lastStr);//приклеиваеи недостающую часть
+
                     }
                 }
-                ComLog.addAll(outStr.split("\n"));
-
+                ComLog.addAll(outStr.split("\r\n"));//формируем строки и выводим их
+               if(!outStr.endsWith("\r\n"))ComLog.set(ComLog.size() - 1,ComLog.get(ComLog.size()-1)+" ");//добавляем пробел к последней строке если не обнаружен её конец
             }
         });
         comPortListenerServise.setOnFailed(e->{
+            ComLog.add("порт "+ comPortName +" аварийно завершил работу");
             comPortName = null;
             try {
                 App.comSelecter(this);
