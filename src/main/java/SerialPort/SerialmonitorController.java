@@ -26,6 +26,7 @@ public class SerialmonitorController implements Initializable {
     ListView<String> ListView1 = new ListView<String>();
 
     private String comPortName = null;
+    String test = "";
     private int baundRate = 115200; //скорость порта
     private ComPortListenerServise comPortListenerServise = new ComPortListenerServise();
     private ObservableList<String> ComLog = FXCollections.observableArrayList();
@@ -41,6 +42,8 @@ public class SerialmonitorController implements Initializable {
             if (!((String) comPortListenerServise.getValue()).isEmpty())//пустой вывод сервиса не обрабатывается
             {
                 String outStr = (String) comPortListenerServise.getValue();//данные полученные с COM порта
+                test += outStr;
+                outStr = outStr.replaceAll("[\r]","");//удаляем лишние спецсимволы
                 if (ComLog.size()!=0){
                    String lastStr = ComLog.get(ComLog.size()-1); //последняя строка лога
                     if(lastStr.endsWith("@")){//если строка заканчивается пробелом, добавляем недостающую часть
@@ -54,14 +57,11 @@ public class SerialmonitorController implements Initializable {
                             str = outStr;//если нет, берём всю строку
                             outStr = "";
                         }
-                            lastStr = lastStr.concat(str);
-                            lastStr = lastStr.replaceAll("[\n\r]","");//удаляем спецсимволы если они пршли в разных пакетах
-
-                            ComLog.set(ComLog.size() - 1, lastStr);//приклеиваеи недостающую часть
+                            ComLog.set(ComLog.size() - 1, lastStr.concat(str));//приклеиваеи недостающую часть
                     }
                 }
-                ComLog.addAll(outStr.split("\r\n"));//формируем строки и выводим их
-               if(!outStr.endsWith("\r\n"))ComLog.set(ComLog.size() - 1,ComLog.get(ComLog.size()-1)+"@");//добавляем пробел к последней строке если не обнаружен её конец
+                ComLog.addAll(outStr.split("\n"));//формируем строки и выводим их
+               if(!outStr.endsWith("\n"))ComLog.set(ComLog.size() - 1,ComLog.get(ComLog.size()-1)+"@");//добавляем пробел к последней строке если не обнаружен её конец
             }
         });
         comPortListenerServise.setOnFailed(e->{
