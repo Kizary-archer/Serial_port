@@ -43,8 +43,7 @@ public class SerialmonitorController implements Initializable {
                 String outStr = (String) comPortListenerServise.getValue();//данные полученные с COM порта
                 if (ComLog.size()!=0){
                    String lastStr = ComLog.get(ComLog.size()-1); //последняя строка лога
-                    if(lastStr.endsWith(" ")){//если строка заканчивается пробелом, добавляем недостающую часть
-                        lastStr.trim();//удаляем пробел в конце
+                    if(lastStr.endsWith("@")){//если строка заканчивается пробелом, добавляем недостающую часть
                         String str; //строка склейки
                         if(outStr.contains("\n"))
                         {
@@ -59,11 +58,10 @@ public class SerialmonitorController implements Initializable {
                             lastStr = lastStr.replaceAll("[\n\r]","");//удаляем спецсимволы если они пршли в разных пакетах
 
                             ComLog.set(ComLog.size() - 1, lastStr);//приклеиваеи недостающую часть
-
                     }
                 }
                 ComLog.addAll(outStr.split("\r\n"));//формируем строки и выводим их
-               if(!outStr.endsWith("\r\n"))ComLog.set(ComLog.size() - 1,ComLog.get(ComLog.size()-1)+" ");//добавляем пробел к последней строке если не обнаружен её конец
+               if(!outStr.endsWith("\r\n"))ComLog.set(ComLog.size() - 1,ComLog.get(ComLog.size()-1)+"@");//добавляем пробел к последней строке если не обнаружен её конец
             }
         });
         comPortListenerServise.setOnFailed(e->{
