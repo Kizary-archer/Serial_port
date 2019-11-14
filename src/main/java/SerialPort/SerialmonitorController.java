@@ -46,12 +46,13 @@ public class SerialmonitorController implements Initializable {
                 outStr = outStr.replaceAll("[\r]","");//удаляем лишние спецсимволы
                 if (ComLog.size()!=0){
                    String lastStr = ComLog.get(ComLog.size()-1); //последняя строка лога
-                    if(lastStr.endsWith("@")){//если строка заканчивается пробелом, добавляем недостающую часть
+                    if(lastStr.endsWith("\f")){//если строка заканчивается символом, добавляем недостающую часть
+                        outStr = outStr.replaceAll("[\f]","");//удаляем лишние спецсимволы
                         String str; //строка склейки
                         if(outStr.contains("\n"))
                         {
                             str = outStr.substring(0, outStr.indexOf("\n"));//если есть символ конца строки, режем до него
-                            outStr = outStr.substring(outStr.indexOf("\n") + 1, outStr.length() - 1); //удаляем приклеенную часть из основной строки
+                            outStr = outStr.substring(outStr.indexOf("\n") + 1, outStr.length()); //удаляем приклеенную часть из основной строки
                         }
                         else {
                             str = outStr;//если нет, берём всю строку
@@ -61,7 +62,7 @@ public class SerialmonitorController implements Initializable {
                     }
                 }
                 ComLog.addAll(outStr.split("\n"));//формируем строки и выводим их
-               if(!outStr.endsWith("\n"))ComLog.set(ComLog.size() - 1,ComLog.get(ComLog.size()-1)+"@");//добавляем пробел к последней строке если не обнаружен её конец
+               if(!outStr.endsWith("\n"))ComLog.set(ComLog.size() - 1,ComLog.get(ComLog.size()-1)+"\f");//добавляем пробел к последней строке если не обнаружен её конец
             }
         });
         comPortListenerServise.setOnFailed(e->{
