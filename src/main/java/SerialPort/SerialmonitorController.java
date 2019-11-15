@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -19,6 +20,8 @@ import java.util.ResourceBundle;
 public class SerialmonitorController implements Initializable {
 
     @FXML
+    Button selComPortButton;
+    @FXML
     VBox VBoxMainMonitor;
     @FXML
     TextField TextField1 = new TextField();
@@ -26,7 +29,6 @@ public class SerialmonitorController implements Initializable {
     ListView<String> ListView1 = new ListView<String>();
 
     private String comPortName = null;
-    String test = "";
     private int baundRate = 115200; //скорость порта
     private ComPortListenerServise comPortListenerServise = new ComPortListenerServise();
     private ObservableList<String> ComLog = FXCollections.observableArrayList();
@@ -42,12 +44,11 @@ public class SerialmonitorController implements Initializable {
             if (!((String) comPortListenerServise.getValue()).isEmpty())//пустой вывод сервиса не обрабатывается
             {
                 String outStr = (String) comPortListenerServise.getValue();//данные полученные с COM порта
-                test += outStr;
                 outStr = outStr.replaceAll("[\r]","");//удаляем лишние спецсимволы
                 if (ComLog.size()!=0){
                    String lastStr = ComLog.get(ComLog.size()-1); //последняя строка лога
                     if(lastStr.endsWith("\f")){//если строка заканчивается символом, добавляем недостающую часть
-                        outStr = outStr.replaceAll("[\f]","");//удаляем лишние спецсимволы
+                        lastStr = lastStr.replaceAll("[\f]","");//удаляем лишние спецсимволы
                         String str; //строка склейки
                         if(outStr.contains("\n"))
                         {
@@ -61,8 +62,12 @@ public class SerialmonitorController implements Initializable {
                             ComLog.set(ComLog.size() - 1, lastStr.concat(str));//приклеиваеи недостающую часть
                     }
                 }
-                ComLog.addAll(outStr.split("\n"));//формируем строки и выводим их
-               if(!outStr.endsWith("\n"))ComLog.set(ComLog.size() - 1,ComLog.get(ComLog.size()-1)+"\f");//добавляем пробел к последней строке если не обнаружен её конец
+               if(!outStr.isEmpty()) {
+                   ComLog.addAll(outStr.split("\n"));//формируем строки и выводим их
+               }
+               if(!outStr.endsWith("\n")){
+                   ComLog.set(ComLog.size() - 1,ComLog.get(ComLog.size()-1)+"\f");//добавляем пробел к последней строке если не обнаружен её конец
+               }
             }
         });
         comPortListenerServise.setOnFailed(e->{
@@ -75,48 +80,44 @@ public class SerialmonitorController implements Initializable {
             }
         });
     }
-    void setComPort(String name){
+    void setComPort(String name){//сервис слушатель стартует при установке/переустановке порта
         this.comPortName = name;
         comPortListenerServise.setComPort(name,baundRate);
         comPortListenerServise.restart();
+        ComLog.add("подключение к порту "+ comPortName);
     }
 
-    public void enterButtonClick(ActionEvent actionEvent) {//отправка данных
+    public void enterButtonClick(ActionEvent actionEvent) {//отправка данных в порт
      if(TextField1.getLength() == 0)return;
      comPortListenerServise.writeComPort(TextField1.getText());
      TextField1.clear();
 
     }
     public void settingClick(MouseEvent actionEvent) {
-        ComPortListServise comPortListServise = new ComPortListServise();
         if (VBoxMainMonitor.getChildren().size()>2) {
             VBoxMainMonitor.getChildren().remove(2);
-            comPortListServise.cancel();
             return;
         }
-        ComboBox<String> ComboBox1 = new ComboBox<String>();
-        ComboBox1.setValue(comPortName);
         ComboBox<String> ComboBox2 = new ComboBox<String>();
-        HBox hBox = new HBox(ComboBox1,ComboBox2);
-
+        HBox hBox = new HBox(ComboBox2);
         VBoxMainMonitor.getChildren().add(hBox);
-      comPortListServise.setPeriod(Duration.seconds(1));
-        comPortListServise.setOnSucceeded(e -> {
-            ComboBox1.setItems(comPortListServise.getName());
-            ComboBox1.setValue(comPortName);
-        });
-        comPortListServise.start();
+
         ObservableList<String> comList = FXCollections.observableArrayList("4800", "9600", "115200");
         ComboBox2.setItems(comList);
         ComboBox2.setValue(Integer.toString(baundRate));
-
-        ComboBox1.setOnAction(e ->{
-            System.out.println("sfsdfsdf");
-        });
         ComboBox2.setOnAction(e->{
            baundRate = Integer.parseInt(ComboBox2.getSelectionModel().getSelectedItem());
            comPortListenerServise.setBaundRate(baundRate);
            ComLog.add("Скорость порта изменена на "+baundRate+" бод\n");
         });
            }
+
+    public void selComPortButtonClick(ActionEvent actionEvent) {
+        this.comPortName = null;
+        try {
+            App.comSelecter(this);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
