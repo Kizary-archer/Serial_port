@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -99,9 +101,10 @@ public class SerialmonitorController implements Initializable {
             return;
         }
         ComboBox<String> ComboBox2 = new ComboBox<String>();
-        HBox hBox = new HBox(ComboBox2);
+        ImageView ImageView2 = new ImageView();
+        HBox hBox = new HBox(ComboBox2,ImageView2);
         VBoxMainMonitor.getChildren().add(hBox);
-
+        ///////////////ComboBox2///////////////////
         ObservableList<String> comList = FXCollections.observableArrayList("4800", "9600", "115200");
         ComboBox2.setItems(comList);
         ComboBox2.setValue(Integer.toString(baundRate));
@@ -110,9 +113,20 @@ public class SerialmonitorController implements Initializable {
            comPortListenerServise.setBaundRate(baundRate);
            ComLog.add("Скорость порта изменена на "+baundRate+" бод\n");
         });
+        ////////////////////////////////////////////
+
+        ////////////////ImageView2///////////////////
+        Image setImg = new Image(getClass().getResourceAsStream("/img/settings.png"));
+        ImageView2.setImage(setImg);
+        ImageView2.setFitWidth(26);
+        ImageView2.setFitHeight(26);
+        ImageView2.setOnMouseClicked(e -> {
+            System.out.println("scascasc");
+        });
+        ///////////////////////////////////////////
            }
 
-    public void selComPortButtonClick(ActionEvent actionEvent) {
+    public void selComPortButtonClick(MouseEvent actionEvent) {
         this.comPortName = null;
         try {
             App.comSelecter(this);
