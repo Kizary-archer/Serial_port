@@ -5,12 +5,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -21,8 +24,6 @@ import java.util.ResourceBundle;
 
 public class SerialmonitorController implements Initializable {
 
-    @FXML
-    Button selComPortButton;
     @FXML
     VBox VBoxMainMonitor;
     @FXML
@@ -86,7 +87,7 @@ public class SerialmonitorController implements Initializable {
         this.comPortName = name;
         comPortListenerServise.setComPort(name,baundRate);
         comPortListenerServise.restart();
-        ComLog.add("подключение к порту "+ comPortName);
+        ComLog.add("Подключение к порту "+ comPortName);
     }
 
     public void enterButtonClick(ActionEvent actionEvent) {//отправка данных в порт
@@ -100,38 +101,62 @@ public class SerialmonitorController implements Initializable {
             VBoxMainMonitor.getChildren().remove(2);
             return;
         }
-        ComboBox<String> ComboBox2 = new ComboBox<String>();
-        ImageView ImageView2 = new ImageView();
-        HBox hBox = new HBox(ComboBox2,ImageView2);
+        ComboBox<String> comboboxBaundRate = new ComboBox<String>();
+        ImageView imgViewPortSell = new ImageView();
+        ImageView imgViewClear = new ImageView();
+        HBox hBox = new HBox(comboboxBaundRate,imgViewPortSell,imgViewClear);
+        hBox.setPadding(new Insets(0,10,10,10));
+        hBox.setSpacing(10);
         VBoxMainMonitor.getChildren().add(hBox);
-        ///////////////ComboBox2///////////////////
-        ObservableList<String> comList = FXCollections.observableArrayList("4800", "9600", "115200");
-        ComboBox2.setItems(comList);
-        ComboBox2.setValue(Integer.toString(baundRate));
-        ComboBox2.setOnAction(e->{
-           baundRate = Integer.parseInt(ComboBox2.getSelectionModel().getSelectedItem());
+        ///////////////comboboxBaundRate////////////
+        ObservableList<String> comList = FXCollections.observableArrayList(
+                                                                     "300",
+                                                                            "1200",
+                                                                            "2400",
+                                                                            "4800",
+                                                                            "9600",
+                                                                            "19200",
+                                                                            "38400",
+                                                                            "57600",
+                                                                            "115200",
+                                                                            "230400",
+                                                                            "250000",
+                                                                            "500000",
+                                                                            "1000000",
+                                                                            "2000000"
+        );
+        comboboxBaundRate.setItems(comList);
+        comboboxBaundRate.setValue(Integer.toString(baundRate));
+        comboboxBaundRate.setOnAction(e->{
+           baundRate = Integer.parseInt(comboboxBaundRate.getSelectionModel().getSelectedItem());
            comPortListenerServise.setBaundRate(baundRate);
            ComLog.add("Скорость порта изменена на "+baundRate+" бод\n");
         });
         ////////////////////////////////////////////
 
-        ////////////////ImageView2///////////////////
-        Image setImg = new Image(getClass().getResourceAsStream("/img/settings.png"));
-        ImageView2.setImage(setImg);
-        ImageView2.setFitWidth(26);
-        ImageView2.setFitHeight(26);
-        ImageView2.setOnMouseClicked(e -> {
-            System.out.println("scascasc");
+        ////////////////imgViewPortSell/////////////
+        Image setImg = new Image(getClass().getResourceAsStream("/img/port.png"));
+        imgViewPortSell.setImage(setImg);
+        imgViewPortSell.setOnMouseClicked(e -> {
+            this.comPortName = null;
+            try {
+                App.comSelecter(this);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         });
         ///////////////////////////////////////////
-           }
 
-    public void selComPortButtonClick(MouseEvent actionEvent) {
-        this.comPortName = null;
-        try {
-            App.comSelecter(this);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        ////////////////imgViewClear///////////////
+        Image clearImg = new Image(getClass().getResourceAsStream("/img/clear.png"));
+        imgViewClear.setImage(clearImg);
+        imgViewClear.setOnMouseClicked(e -> {
+            ComLog.clear();
+        });
+        ///////////////////////////////////////////
+    }
+
+    public void TextField1keyPresed(KeyEvent keyEvent) {
+        if (keyEvent.getCode().equals(KeyCode.ENTER)) enterButtonClick(new ActionEvent());//если нажат enter, генерируем событие нажатия кнопки ENTER
     }
 }

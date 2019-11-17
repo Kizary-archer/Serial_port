@@ -15,20 +15,19 @@
    <ListView fx:id="ListView1" cacheShape="false" centerShape="false" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" scaleShape="false" VBox.vgrow="ALWAYS" />
 
          <GridPane fx:id="commandPane">
-         <TextField fx:id="TextField1" />
+         <TextField fx:id="TextField1" onKeyPressed="#TextField1keyPresed" />
          <Button id="enterButton" blendMode="ADD" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onAction="#enterButtonClick" text="ENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>
          </Button>
-      <ImageView accessibleRole="BUTTON" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#settingClick" opacity="0.62" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
-         <image>
-            <Image url="@img/settings.png" />
-         </image>
-         <GridPane.margin>
-            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-         </GridPane.margin>
-      </ImageView>
+             <ImageView accessibleRole="BUTTON" fitHeight="26.0" fitWidth="26.0" onMouseClicked="#settingClick"
+                        opacity="0.62" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                 <GridPane.margin>
+                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                 </GridPane.margin>
+                 <Image url="@img/settings.png"/>
+             </ImageView>
       <columnConstraints>
          <ColumnConstraints hgrow="ALWAYS" percentWidth="85.0" />
          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" percentWidth="15.0" />
