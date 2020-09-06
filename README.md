@@ -1,1 +1,2 @@
-# Serial_port
+# Сниффер COM-портов
+![sniffer](./logo.jpg)
