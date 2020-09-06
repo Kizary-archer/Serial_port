@@ -1,0 +1,24 @@
+#VBoxMainMonitor{
+-fx-font-family: "Segoe UI Semibold";
+}
+
+
+#title{
+-fx-text-fill: white;
+-fx-font-size: 16pt;
+}
+#TextArea1{
+-fx-padding:5;
+-fx-minHeight:-Infinity;
+-fx-minWidth:-Infinity;
+
+}
+#commandPane{
+-fx-alignment: center;
+-fx-max-width: Infinity;
+-fx-padding:5;
+-fx-background-color: aqua;
+}
+ComboBox{
+-fx-background-color: white;
+}
